@@ -5,7 +5,7 @@ metadata:
   title: Metadata
   description: Statistics Norway's metadata system
   tags:
-    metadata
+    - metadata
 spec:
   owner: dapla-metadata-developers
   domain: fellesfunksjoner
