@@ -1,0 +1,32 @@
+name: Publish GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'mkdocs.yml'
+      - 'docs/**/*'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'mkdocs.yml'
+      - 'docs/**/*'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+
+      - name: Install dependencies
+        run: pip install mkdocs-material mkdocs-techdocs-core
+
+      - name: Build and Deploy
+        run: mkdocs gh-deploy --force

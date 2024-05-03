@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: metadata
+  title: Metadata
+  description: Statistics Norway's metadata system
+  tags:
+    metadata
+spec:
+  owner: dapla-metadata-developers
+  domain: fellesfunksjoner

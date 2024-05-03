@@ -1,0 +1,13 @@
+repos:
+  - repo: local
+    hooks:
+      - id: update-readme
+        name: Update README
+        entry: bin/update_readme.py
+        language: system
+        files: Makefile|git-repos.txt
+      - id: update-gitignore
+        name: Update .gitignore
+        entry: bin/update_gitignore.py
+        language: system
+        files: git-repos.txt
