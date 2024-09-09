@@ -1,4 +1,7 @@
 datadoc
 ssb-datadoc-model
+dapla-toolbelt-metadata
 klass
+klass-web
 vardef
+metadata-api-gateway
