@@ -9,8 +9,11 @@ The Metadata System is composed of a collection of libraries and services:
 <!-- linked-repos-start -->
 * [datadoc](https://github.com/statisticsnorway/datadoc)
 * [ssb-datadoc-model](https://github.com/statisticsnorway/ssb-datadoc-model)
+* [dapla-toolbelt-metadata](https://github.com/statisticsnorway/dapla-toolbelt-metadata)
 * [klass](https://github.com/statisticsnorway/klass)
+* [klass-web](https://github.com/statisticsnorway/klass-web)
 * [vardef](https://github.com/statisticsnorway/vardef)
+* [metadata-api-gateway](https://github.com/statisticsnorway/metadata-api-gateway)
 <!-- linked-repos-end -->
 
 
