@@ -9,3 +9,19 @@ metadata:
 spec:
   owner: dapla-metadata-developers
   domain: fellesfunksjoner
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: metadata-mongodb
+  title: Metadata MongoDB
+  description: MongoDB cluster for the Metadata system
+  tags:
+    - database
+    - mongodb
+    - metadata
+spec:
+  type: database
+  system: metadata
+  owner: dapla-metadata-developers
+  lifecycle: experimental
