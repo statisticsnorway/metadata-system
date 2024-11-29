@@ -1,4 +1,4 @@
-datadoc
+datadoc-editor
 ssb-datadoc-model
 dapla-toolbelt-metadata
 klass
