@@ -6,9 +6,19 @@ metadata:
   description: Statistics Norway's metadata system
   tags:
     - metadata
+  links:
+    - url: https://manual.dapla.ssb.no/statistikkere/metadata.html
+      title: Dapla Manual
+      icon: techdocs
+    - url: https://statistics-norway.atlassian.net/wiki/x/RACo1w
+      title: Team Metadata Confluence
+      icon: techdocs
+    - url: https://ssb-norge.slack.com/archives/C069BAVNGA0
+      title: Team Metadata Slack (send us a message :) )
+      icon: chat
 spec:
   owner: dapla-metadata-developers
-  domain: fellesfunksjoner
+  domain: dapla
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Resource
