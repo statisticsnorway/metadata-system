@@ -3,7 +3,18 @@ kind: System
 metadata:
   name: metadata
   title: Metadata
-  description: Statistics Norway's metadata system
+  description: |
+    Statistics Norway's metadata system.
+
+    Supports administration and consumption of metadata about:
+      - Datasets
+      - Variables
+      - Variable Definitions
+      - Classifications
+
+    All operations are supported programmatically through an API
+    and Python client as well as manually through graphical interfaces.
+
   tags:
     - metadata
   links:
