@@ -5,3 +5,5 @@ klass
 klass-web
 vardef
 metadata-api-gateway
+dapla-metadata-iac
+metadata-catalog-poc
