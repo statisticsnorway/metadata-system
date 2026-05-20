@@ -7,3 +7,5 @@ vardef
 metadata-api-gateway
 dapla-metadata-iac
 ssb-dataportal
+datadoc-service
+metamapper
