@@ -7,13 +7,18 @@ See [docs](https://statisticsnorway.github.io/metadata-system) for more informat
 The Metadata System is composed of a collection of libraries and services:
 
 <!-- linked-repos-start -->
-* [datadoc](https://github.com/statisticsnorway/datadoc)
+* [datadoc-editor](https://github.com/statisticsnorway/datadoc-editor)
 * [ssb-datadoc-model](https://github.com/statisticsnorway/ssb-datadoc-model)
 * [dapla-toolbelt-metadata](https://github.com/statisticsnorway/dapla-toolbelt-metadata)
 * [klass](https://github.com/statisticsnorway/klass)
 * [klass-web](https://github.com/statisticsnorway/klass-web)
 * [vardef](https://github.com/statisticsnorway/vardef)
 * [metadata-api-gateway](https://github.com/statisticsnorway/metadata-api-gateway)
+* [dapla-metadata-iac](https://github.com/statisticsnorway/dapla-metadata-iac)
+* [ssb-dataportal](https://github.com/statisticsnorway/ssb-dataportal)
+* [datadoc-service](https://github.com/statisticsnorway/datadoc-service)
+* [metamapper](https://github.com/statisticsnorway/metamapper)
+* [metamapper-dispatcher](https://github.com/statisticsnorway/metamapper-dispatcher)
 <!-- linked-repos-end -->
 
 
