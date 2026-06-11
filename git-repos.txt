@@ -9,3 +9,4 @@ dapla-metadata-iac
 ssb-dataportal
 datadoc-service
 metamapper
+metamapper-dispatcher
