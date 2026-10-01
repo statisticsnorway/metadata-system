@@ -5,8 +5,6 @@ IMAGE_TAG="${IMAGE_TAG:?IMAGE_TAG is required}"
 RISK_THRESHOLD="${RISK_THRESHOLD:-1.0}"
 SEVERITIES="${SEVERITIES:-High,Critical}"
 
-mkdir -p report
-
 grype "$IMAGE_TAG" -o json > grype-report.json
 
 SEVERITIES_JSON="$(
@@ -36,13 +34,3 @@ jq \
   | sort_by(.risk)
   | reverse
 ' grype-report.json > filtered-vulns.json
-
-# Keep the existing Python report-generation section here.
-```python
-# Python report-generation code goes here
-```
-
-Make the script executable:
-
-````bash
-chmod +x .github/actions/grype-report/grype-report.sh
