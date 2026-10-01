@@ -1,0 +1,26 @@
+name: Generate Grype report
+description: Scan a container image and generate vulnerability reports
+
+inputs:
+  image:
+    description: Container image to scan
+    required: true
+  risk-threshold:
+    description: Minimum risk score
+    required: false
+    default: "1.0"
+  severities:
+    description: Comma-separated severities
+    required: false
+    default: "High,Critical"
+
+runs:
+  using: composite
+  steps:
+    - name: Run Grype report
+      shell: bash
+      env:
+        IMAGE_TAG: ${{ inputs.image }}
+        RISK_THRESHOLD: ${{ inputs.risk-threshold }}
+        SEVERITIES: ${{ inputs.severities }}
+      run: bash "${{ github.action_path }}/grype-report.sh"
