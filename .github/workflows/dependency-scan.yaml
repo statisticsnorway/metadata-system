@@ -15,9 +15,6 @@ on:
         required: false
         type: string
         default: "dependency-scan-image:latest"
-  schedule:
-    - cron: "0 0 * * *" # Runs every day at midnight
-  workflow_dispatch:
 jobs:
   grype-scan:
     runs-on: ubuntu-latest
