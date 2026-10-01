@@ -73,7 +73,7 @@ The workflow builds and scans the Docker image, uploads SARIF results to GitHub 
 
 To release a new version:
 
-`````bash
+````bash
 git tag -a v1.0.0 -m "Release v1.0.0"
 git push origin v1.0.0
 
