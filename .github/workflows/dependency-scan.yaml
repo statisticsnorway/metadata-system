@@ -21,10 +21,8 @@ jobs:
     permissions:
       security-events: write
       contents: read
-      id-token: write
       packages: read
       actions: read
-      pages: write
     env:
       RISK_THRESHOLD: "1.0"
       SEVERITIES: "High,Critical"
