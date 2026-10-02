@@ -61,7 +61,7 @@ jobs:
           sudo apt-get install -y jq
 
       - name: Run Grype report script
-        uses: statisticsnorway/metadata-system/.github/actions/grype-report@v1
+        uses: statisticsnorway/metadata-system/.github/actions/grype-report@6d03a85e94b5951d4fed6e7550e4d17b38f7acb7
         with:
           image: ${{ inputs.image }}
           risk-threshold: ${{ env.RISK_THRESHOLD }}
