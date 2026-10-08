@@ -1,0 +1,241 @@
+name: Grype security scan
+
+on:
+  workflow_call:
+    inputs:
+      docker-context:
+        required: false
+        type: string
+        default: "."
+      dockerfile:
+        required: false
+        type: string
+        default: "Dockerfile"
+      image:
+        required: false
+        type: string
+        default: "dependency-scan-image:latest"
+jobs:
+  grype-scan:
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      contents: read
+      packages: read
+      actions: read
+    env:
+      RISK_THRESHOLD: "1.0"
+      SEVERITIES: "High,Critical"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Build the container image
+        run: docker build ${{ inputs.docker-context }} --file ${{ inputs.dockerfile }} --tag ${{ inputs.image }} 
+
+      - name: Display scan result as table
+        uses: anchore/scan-action@e1165082ffb1fe366ebaf02d8526e7c4989ea9d2 # v7.4.0
+        with:
+          image: ${{ inputs.image }}
+          output-format: table
+          fail-build: false
+          severity-cutoff: high
+
+      - name: Create Docker SARIF file
+        uses: anchore/scan-action@e1165082ffb1fe366ebaf02d8526e7c4989ea9d2 # v7.4.0
+        id: scan
+        with:
+          image: ${{ inputs.image }}
+          fail-build: false
+          severity-cutoff: high
+
+      - name: Install Grype + jq
+        env:
+          GRYPE_VERSION: v0.114.0
+        run: |
+          curl -sSfL "https://raw.githubusercontent.com/anchore/grype/${GRYPE_VERSION}/install.sh" \
+            | sh -s -- -b /usr/local/bin "${GRYPE_VERSION}"
+          sudo apt-get update
+          sudo apt-get install -y jq
+
+      - name: Run Grype report script
+        uses: statisticsnorway/metadata-system/.github/actions/grype-report@0030f4b35edda42ef311c9d7a6a88d885176df6e
+        with:
+          image: ${{ inputs.image }}
+          risk-threshold: ${{ env.RISK_THRESHOLD }}
+          severities: ${{ env.SEVERITIES }}
+
+      - name: Build RISK map (ruleId -> composite RISK)
+        run: |
+          echo "Sample entry from filtered-vulns.json:"
+          jq '.[0]' filtered-vulns.json || echo "filtered-vulns.json is empty or missing"
+
+          jq '
+            map({
+              key: (.vulnerability // .id // ""),
+              value: ((.risk // 0) | tonumber)
+            })
+            | map(select(.key != ""))
+            | from_entries
+          ' filtered-vulns.json > risk-map.json
+
+          echo "RISK map entries: $(jq 'length' risk-map.json)"
+          echo "Sample map keys:"
+          jq 'to_entries | .[0:5]' risk-map.json
+
+
+      - name: Filter Docker SARIF (composite RISK > RISK_THRESHOLD)
+        run: |
+          jq --argjson threshold "${RISK_THRESHOLD}" \
+            --slurpfile riskMap risk-map.json '
+            def as_array(x):
+              if (x | type) == "array" then x else [] end;
+
+            def as_object(x):
+              if (x | type) == "object" then x else {} end;
+
+            def cve_from_rule_id(x):
+              (x // "")
+              | split("-")
+              | if length >= 3 and .[0] == "CVE"
+                then .[0:3] | join("-")
+                else ""
+                end;
+
+            ($riskMap[0] // {}) as $risk
+
+            | .runs |= (
+                as_array(.)
+                | map(
+                    .results = (
+                      as_array(.results)
+                      | map(select(type == "object"))
+                      | map(
+                          . as $r
+                          | cve_from_rule_id($r.ruleId) as $cve
+                          | (($risk[$cve] // 0) | tonumber) as $riskScore
+                          | select(
+                              (($r.level // "") == "error")
+                              and ($riskScore > $threshold)
+                            )
+                          | .message.text = (
+                              "[RISK " + ($riskScore | tostring) + "] "
+                              + ($r.message.text // "")
+                            )
+                        )
+                    )
+
+                    | (
+                        as_array(.results)
+                        | map(.ruleId | select(type == "string"))
+                        | unique
+                      ) as $keep
+
+                    | .tool.driver.rules = (
+                        as_array(.tool.driver.rules)
+                        | map(select(type == "object"))
+                        | map(select(
+                            (.id | type) == "string"
+                            and (.id as $ruleId
+                                | ($keep | index($ruleId)) != null)
+                          ))
+                        | map(
+                            as_object(.)
+                            | .properties = as_object(.properties)
+                            | .properties["security-severity"] =
+                                (
+                                  cve_from_rule_id(.id) as $cve
+                                  | (($risk[$cve] // 0) | tostring)
+                                )
+                          )
+                      )
+                  )
+              )
+          ' "${{ steps.scan.outputs.sarif }}" > docker.filtered.sarif
+
+          echo "Kept results: $(jq '[.runs[].results[]] | length' docker.filtered.sarif)"
+
+      - name: Validate filtered SARIF
+        run: |
+          set -euo pipefail
+
+          echo "=== JSON validation ==="
+          jq empty docker.filtered.sarif
+          echo "JSON: OK"
+
+          echo "=== SARIF structure ==="
+          jq -e '
+            (.version | type == "string")
+            and (.runs | type == "array")
+            and all(.runs[];
+              (.tool.driver | type == "object")
+              and (.tool.driver.rules | type == "array")
+              and (.results | type == "array")
+            )
+          ' docker.filtered.sarif >/dev/null
+
+          echo "SARIF structure: OK"
+
+      - name: Validate SARIF rule references
+        run: |
+          set -euo pipefail
+
+          jq -e '
+            all(.runs[];
+              (
+                [.tool.driver.rules[]?.id]
+                | unique
+              ) as $ruleIds
+              |
+              all(.results[]?.ruleId;
+                . as $resultRuleId
+                | ($ruleIds | index($resultRuleId)) != null
+              )
+            )
+          ' docker.filtered.sarif >/dev/null
+
+          echo "SARIF rule references: OK"
+
+      - name: Show filtered SARIF summary
+        run: |
+          echo "=== Filtered results ==="
+
+          jq '
+            [.runs[].results[]? |
+              {
+                ruleId,
+                level,
+                message: .message.text
+              }
+            ]
+          ' docker.filtered.sarif
+
+          echo "=== Filtered rules ==="
+
+          jq '
+            [.runs[].tool.driver.rules[]? |
+              {
+                id,
+                severity: .properties["security-severity"]
+              }
+            ]
+          ' docker.filtered.sarif
+
+      - name: Upload Docker SARIF report
+        uses: github/codeql-action/upload-sarif@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4.36.2
+        with:
+          sarif_file: docker.filtered.sarif
+          category: docker-grype
+
+      - name: Set finding count
+        run: echo "VULN_COUNT=$(jq 'length' filtered-vulns.json)" >> "$GITHUB_ENV"
+
+      - name: Upload filtered report artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: grype-reports
+          path: |
+            grype-report.json
+            filtered-vulns.json
