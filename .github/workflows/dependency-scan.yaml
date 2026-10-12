@@ -15,6 +15,10 @@ on:
         required: false
         type: string
         default: "dependency-scan-image:latest"
+      upload-sarif:
+        required: false
+        type: boolean
+        default: true
 jobs:
   grype-scan:
     runs-on: ubuntu-latest
@@ -224,6 +228,7 @@ jobs:
           ' docker.filtered.sarif
 
       - name: Upload Docker SARIF report
+        if: inputs.upload-sarif
         uses: github/codeql-action/upload-sarif@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4.36.2
         with:
           sarif_file: docker.filtered.sarif
