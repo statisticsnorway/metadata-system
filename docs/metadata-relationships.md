@@ -58,6 +58,7 @@ required to expose an internal UUID.
 | `correspondence-table`   | klass           | id                            | Out of scope for now, listed for completeness                     |
 | `classification-version` | klass           | version id                    | Out of scope for now, listed for completeness                     |
 | `dataset`                | datadoc-service | UUID                          |                                                                   |
+| `data-product`           | datadoc-service | `productShortName`            | The container above datasets                                      |
 | `variable-instance`      | datadoc-service | UUID                          |                                                                   |
 | `data-file`              | datadoc-service | file path                     |                                                                   |
 | `team`                   | Dapla           | team slug                     | External service                                                  |
@@ -169,6 +170,7 @@ Domains: `dataset`, `variable-instance`.
 | predicate                   | domain → range                    | card     | req         | `as_of`  | status          |
 | --------------------------- | --------------------------------- | -------- | ----------- | -------- | --------------- |
 | `contains`                  | `dataset` → `variable-instance`   | 1..*     | yes         | —        | trial           |
+| `part-of-product`           | `dataset` → `data-product`        | 1..1     | yes         | —        | trial           |
 | `present-in`                | `variable-instance` → `data-file` | 0..*     | yes         | —        | trial           |
 | `defined-by`                | instance → `variable-definition`  | 0..1 → 1 | target: yes | required | unvalidated     |
 | `has-candidate-definitions` | instance → `variable-definition`  | 0..*     | no          | required | new · committed |
@@ -243,7 +245,7 @@ stored.
 | `effective-classification-of(instance)` | `defined-by → classified-by`                       | Which classification defines this column's values? |
 | `effective-unit-type-of(instance)`      | `defined-by → has-unit-type`                       | What is this column measured in?                   |
 | `dataset-classifications(dataset)`      | `contains → defined-by → classified-by`            | What does each variable in this dataset mean?      |
-| `definitions-in-use(data-product)`      | `part-of → contains → defined-by`                  | Which definitions does this product depend on?     |
+| `definitions-in-use(data-product)`      | `part-of-product → contains → defined-by`          | Which definitions does this product depend on?     |
 | `code-at(classification, code, date)`   | resolution at `as_of`                              | Was this code valid then?                          |
 | `duplicate-cluster(definition)`         | transitive `same-as`                               | Which definitions are one variable?                |
 | `documentation-coverage(dataset)`       | share of instances with an `authored` `defined-by` | How much of this dataset is documented?            |
@@ -261,11 +263,11 @@ be expanded to cover them later if needed.
   correspondence tables, and version succession.
 - **Fields fram ssb-datadoc-model**, that is
   `has-data-source`, `has-sentinel-code`, `has-special-value`, `has-subject-area`,
-  `has-owning-section`, `has-population-description`, `part-of-product`, and
-  `pseudonymized-with`. Most of these are expected to be deprecated or superseded.
+  `has-owning-section`, `has-population-description`, and `pseudonymized-with`. Most of
+  these are expected to be deprecated or superseded.
 
-Also out of scope: data products as nodes, pseudonymization keys as nodes, and all
-free-URL fields such as vardef's `externalReferenceUri`.
+Also out of scope: pseudonymization keys as nodes, and all free-URL fields such as
+vardef's `externalReferenceUri`.
 
 ---
 
@@ -323,3 +325,62 @@ Recorded so they are not silently assumed:
 6. **`LanguageStringType`.** Two incompatible serialisations coexist. The relationship
    model does not depend on which wins, but a cross-service reference model cannot
    avoid hitting it.
+
+---
+
+## 11. Implementation examples
+
+An example payload for each predicate. These are illustrations of shape, not a wire
+format: field names, envelope and transport are decided by each service. Every payload
+follows the same structure — the predicate, a closed node reference, provenance, and
+only the properties that predicate declares.
+
+`part-of-product`:
+
+```json
+{ "predicate": "part-of-product", "target": { "service": "datadoc-service", "entity_type": "data-product", "key": "folkemengde" }, "provenance": "authored" }
+```
+
+`contains`:
+
+```json
+{ "predicate": "contains", "target": { "service": "datadoc-service", "entity_type": "variable-instance", "key": "2f1c9a3e-4b7d-4e2a-9c11-8d0f5b6a7c31" }, "provenance": "authored" }
+```
+
+`present-in` — reified, so it carries the per-file attributes:
+
+```json
+{ "predicate": "present-in", "target": { "service": "datadoc-service", "entity_type": "data-file", "key": "gs://bucket/path/fagfelt.parquet" }, "attributes": { "physical_type_name": "INT64", "logical_type_name": "int64" }, "provenance": "inferred" }
+```
+
+`defined-by`:
+
+```json
+{ "predicate": "defined-by", "target": { "service": "vardef", "entity_type": "variable-definition", "key": "a1b2c3d4", "as_of": "2026-10-29" }, "provenance": "authored" }
+```
+
+`has-candidate-definitions` — inferred, with its evidence:
+
+```json
+{ "predicate": "has-candidate-definitions", "target": { "service": "vardef", "entity_type": "variable-definition", "key": "a1b2c3d4", "as_of": "2026-10-29" }, "provenance": "inferred", "evidence": { "signal": "short-name-exact", "score": 0.94 } }
+```
+
+`owned-by` and `accessible-by`:
+
+```json
+{ "predicate": "owned-by", "target": { "service": "dapla", "entity_type": "team", "key": "fagteam-befolkning" }, "provenance": "authored" }
+{ "predicate": "accessible-by", "target": { "service": "dapla", "entity_type": "group", "key": "fagteam-befolkning-developers" }, "provenance": "authored" }
+```
+
+`classified-by` — the series, with the date at which codes are resolved:
+
+```json
+{ "predicate": "classified-by", "target": { "service": "klass", "entity_type": "classification", "key": "91", "as_of": "2026-10-29" }, "provenance": "authored" }
+```
+
+`has-unit-type`, `has-subject-field` and `has-measurement-unit` — codes are scoped to a
+classification, so the key carries it:
+
+```json
+{ "predicate": "has-unit-type", "target": { "service": "klass", "entity_type": "classification-code", "key": "702/KG", "as_of": "2026-10-29" }, "provenance": "authored" }
+```
