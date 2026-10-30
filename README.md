@@ -52,6 +52,21 @@ The build is deterministic: unchanged source produces a byte-identical file, so 
 diff only reflects real edits. Preview with `make serve-docs`;
 `docs/metadata-relationships.md` §12 has the same instructions in context.
 
+## ADRs
+
+ADRs from the other repositories are copied into `docs/adr/<repo>/` and published
+alongside this repository's own, so they can be read on the docs site without access to
+those repositories. The copies are committed, which keeps the docs build free of
+cross-repository access — several of the sources are internal.
+
+Refresh them after pulling the sibling repos; `make collect-adrs` rewrites the copies,
+the overview page and the generated nav block in `mkdocs.yml`:
+
+```bash
+make update-git-repos
+make collect-adrs
+```
+
 ## Development
 
 Run `make install` to configure your local development environment.
@@ -63,6 +78,7 @@ All available make targets:
 install                        Install the dev environment (tools, pre-commit hooks and git repos)
 install-tools                  Install the dev tools with uv
 update-readme                  Update the README.md file
+collect-adrs                   Copy the ADRs of the sibling repos into docs/adr/ and refresh their nav
 doctor                         Ensure that local tools and environment settings are configured correctly
 update-git-repos               Pull all related git repos
 serve-docs                     Serve docs locally

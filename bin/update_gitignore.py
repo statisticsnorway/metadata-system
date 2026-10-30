@@ -11,8 +11,11 @@ def update_gitignore(gitignore_path, repos_file):
 
             with open(repos_file, 'r') as repos_file:
                 for line in repos_file:
-                    repo_entry = line.strip() + '/'
-                    if repo_entry and repo_entry not in existing_lines:
+                    repo = line.strip()
+                    if not repo:
+                        continue
+                    repo_entry = f'/{repo}/'
+                    if repo_entry not in existing_lines:
                         gitignore_file.write(repo_entry + '\n')
                         existing_lines.add(repo_entry)  # Update set to include new entry
 
