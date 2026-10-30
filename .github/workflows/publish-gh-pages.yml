@@ -1,32 +1,85 @@
 name: Publish GitHub Pages
 
+# Requires the Pages source to be "GitHub Actions"
+# (Settings -> Pages -> Build and deployment -> Source).
+# Pull requests only build and upload the site for download; they never deploy.
+
 on:
   push:
     branches:
       - main
     paths:
       - 'mkdocs.yml'
-      - 'docs/**/*'
+      - 'docs/**'
   pull_request:
     branches:
       - main
     paths:
       - 'mkdocs.yml'
-      - 'docs/**/*'
+      - 'docs/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: 3.x
 
-      - name: Install dependencies
+      - name: Install MkDocs
         run: pip install mkdocs-material mkdocs-techdocs-core
 
-      - name: Build and Deploy
-        run: mkdocs gh-deploy --force
+      - name: Build site
+        run: mkdocs build --strict
+
+      - name: Package site for Pages
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Package site for review
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-pr-${{ github.event.number }}
+          path: site
+          retention-days: 14
+
+      - name: Link the downloaded site
+        if: github.event_name == 'pull_request'
+        run: |
+          {
+            echo "### Site preview"
+            echo
+            echo "Download the \`site-pr-${{ github.event.number }}\` artifact from the"
+            echo "[run artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts)"
+            echo "and open \`index.html\`. The relationship diagram on its own is"
+            echo "\`diagrams/metadata-relationships.html\`."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  deploy:
+    needs: build
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

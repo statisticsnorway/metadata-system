@@ -403,5 +403,5 @@ node <archify>/bin/archify.mjs finalize architecture \
 
 The built HTML is committed so that publishing does not depend on the CLI, which is a
 local tool rather than a project dependency. MkDocs copies it verbatim during
-`mkdocs gh-deploy`, so it is served at `diagrams/metadata-relationships.html`. Change
+`mkdocs build`, so it is served at `diagrams/metadata-relationships.html`. Change
 the JSON, not the HTML.
