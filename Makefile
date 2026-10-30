@@ -19,6 +19,10 @@ install-tools: ## Install the dev tools with uv
 update-readme:  ## Update the README.md file
 	@./bin/update_readme.py
 
+.PHONY: collect-adrs
+collect-adrs: ## Copy the ADRs of the sibling repos into docs/adr/ and refresh their nav
+	@./bin/collect_adrs.py
+
 .PHONY: doctor
 doctor: ## Ensure that local tools and environment settings are configured correctly
 	@./bin/doctor.py

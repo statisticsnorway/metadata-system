@@ -3,20 +3,20 @@
 __pycache__/
 
 # System repos
-datadoc/
-ssb-datadoc-model/
-dapla-toolbelt-metadata/
-klass/
-vardef/
-metadata-api-gateway/
-datadoc-editor/
-dapla-metadata-iac/
-metadata-catalog-poc/
-metadata-catalog-prototype/
-ssb-dataportal/
-datadoc-service/
-metamapper/
-metamapper-dispatcher/
+/datadoc/
+/ssb-datadoc-model/
+/dapla-toolbelt-metadata/
+/klass/
+/vardef/
+/metadata-api-gateway/
+/datadoc-editor/
+/dapla-metadata-iac/
+/metadata-catalog-poc/
+/metadata-catalog-prototype/
+/ssb-dataportal/
+/datadoc-service/
+/metamapper/
+/metamapper-dispatcher/
 
 # Archify build workspace (the published diagram lives in docs/diagrams/)
 .archify/
