@@ -6,8 +6,14 @@ help:
 default: | help
 
 .PHONY: install
-install: doctor update-git-repos ## Install the dev environment (pre-commmit hooks and git repos)
-	@pre-commit install
+install: install-tools doctor update-git-repos ## Install the dev environment (tools, pre-commit hooks and git repos)
+	@uv tool run pre-commit install
+
+.PHONY: install-tools
+install-tools: ## Install the dev tools with uv
+	@uv tool install pre-commit
+	@uv tool install mkdocs --with mkdocs-techdocs-core
+	@uv tool update-shell
 
 .PHONY: update-readme
 update-readme:  ## Update the README.md file

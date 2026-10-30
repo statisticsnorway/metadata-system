@@ -20,4 +20,9 @@ metamapper-dispatcher/
 
 # Archify build workspace (the published diagram lives in docs/diagrams/)
 .archify/
+
+# Archify run receipts, written next to the generated diagram
 docs/diagrams/*.delivery.json
+docs/diagrams/*.finalize.json
+docs/diagrams/*.finalize-summary.json
+docs/diagrams/*.browser-check.json

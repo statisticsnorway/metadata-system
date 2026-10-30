@@ -12,7 +12,7 @@ reasoning behind the model is recorded in
 Audience: consumers of metadata, maintainers of metadata, and developers of the
 services.
 
-[Interactive diagram of the model](diagrams/metadata-relationships.html)
+[Interactive diagram of the model](diagrams/index.md)
 
 ---
 
