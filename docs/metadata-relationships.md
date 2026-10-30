@@ -12,6 +12,8 @@ reasoning behind the model is recorded in
 Audience: consumers of metadata, maintainers of metadata, and developers of the
 services.
 
+[Interactive diagram of the model](diagrams/metadata-relationships.html)
+
 ---
 
 ## 1. Vocabulary
@@ -384,3 +386,22 @@ classification, so the key carries it:
 ```json
 { "predicate": "has-unit-type", "target": { "service": "klass", "entity_type": "classification-code", "key": "702/KG", "as_of": "2026-10-29" }, "provenance": "authored" }
 ```
+
+---
+
+## 12. Regenerating the diagram
+
+`diagrams/metadata-relationships.html` is generated from
+`diagrams/metadata-relationships.archify.json` with Archify 3.2.0:
+
+```bash
+node <archify>/bin/archify.mjs finalize architecture \
+  docs/diagrams/metadata-relationships.archify.json \
+  docs/diagrams/metadata-relationships.html \
+  --quality showcase
+```
+
+The built HTML is committed so that publishing does not depend on the CLI, which is a
+local tool rather than a project dependency. MkDocs copies it verbatim during
+`mkdocs gh-deploy`, so it is served at `diagrams/metadata-relationships.html`. Change
+the JSON, not the HTML.

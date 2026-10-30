@@ -1,0 +1,273 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Metadata relationship model",
+    "output": "docs/diagrams/metadata-relationships.html",
+    "quality_profile": "showcase",
+    "locale": "en"
+  },
+  "components": [
+    {
+      "id": "data-product",
+      "type": "database",
+      "label": "Data product",
+      "sublabel": "Datasets grouped under one product",
+      "tag": "productShortName",
+      "pos": [
+        40,
+        60
+      ],
+      "size": [
+        200,
+        70
+      ]
+    },
+    {
+      "id": "dataset",
+      "type": "database",
+      "label": "Dataset",
+      "sublabel": "Files and variables of one dataset",
+      "tag": "UUID",
+      "pos": [
+        40,
+        240
+      ],
+      "size": [
+        200,
+        70
+      ]
+    },
+    {
+      "id": "variable-instance",
+      "type": "database",
+      "label": "Variable instance",
+      "sublabel": "A concrete variable in a dataset",
+      "tag": "UUID",
+      "pos": [
+        320,
+        230
+      ],
+      "size": [
+        220,
+        100
+      ]
+    },
+    {
+      "id": "data-file",
+      "type": "database",
+      "label": "Data file",
+      "sublabel": "One physical file in a dataset",
+      "tag": "file path",
+      "pos": [
+        320,
+        430
+      ],
+      "size": [
+        190,
+        70
+      ]
+    },
+    {
+      "id": "variable-definition",
+      "type": "backend",
+      "label": "Variable definition",
+      "sublabel": "The meaning of a variable",
+      "tag": "definitionId",
+      "pos": [
+        740,
+        240
+      ],
+      "size": [
+        240,
+        100
+      ]
+    },
+    {
+      "id": "team",
+      "type": "external",
+      "label": "Team",
+      "sublabel": "Owning team",
+      "tag": "team slug",
+      "pos": [
+        700,
+        60
+      ],
+      "size": [
+        170,
+        60
+      ]
+    },
+    {
+      "id": "group",
+      "type": "external",
+      "label": "Group",
+      "sublabel": "Access group",
+      "tag": "group name",
+      "pos": [
+        890,
+        60
+      ],
+      "size": [
+        170,
+        60
+      ]
+    },
+    {
+      "id": "classification",
+      "type": "database",
+      "label": "Classification",
+      "sublabel": "Value domain of a variable",
+      "tag": "series id",
+      "pos": [
+        1120,
+        250
+      ],
+      "size": [
+        200,
+        70
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "datadoc-service",
+      "wraps": [
+        "data-product",
+        "dataset",
+        "variable-instance",
+        "data-file"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "vardef",
+      "wraps": [
+        "variable-definition"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "dapla-api",
+      "wraps": [
+        "team",
+        "group"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "klass",
+      "wraps": [
+        "classification"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "dataset-part-of-product",
+      "from": "dataset",
+      "to": "data-product",
+      "label": "part-of-product"
+    },
+    {
+      "id": "dataset-contains",
+      "from": "dataset",
+      "to": "variable-instance",
+      "label": "contains"
+    },
+    {
+      "id": "instance-present-in",
+      "from": "variable-instance",
+      "to": "data-file",
+      "label": "present-in"
+    },
+    {
+      "id": "instance-defined-by",
+      "from": "variable-instance",
+      "to": "variable-definition",
+      "label": "defined-by",
+      "variant": "emphasis"
+    },
+    {
+      "id": "instance-candidate",
+      "from": "variable-instance",
+      "to": "variable-definition",
+      "label": "has-candidate-definitions",
+      "variant": "dashed"
+    },
+    {
+      "id": "definition-owned-by",
+      "from": "variable-definition",
+      "to": "team",
+      "label": "owned-by"
+    },
+    {
+      "id": "definition-accessible-by",
+      "from": "variable-definition",
+      "to": "group",
+      "label": "accessible-by"
+    },
+    {
+      "id": "definition-classified-by",
+      "from": "variable-definition",
+      "to": "classification",
+      "label": "classified-by"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Edge meanings",
+      "items": [
+        "part-of-product — this dataset belongs to this product",
+        "contains — the dataset holds this variable",
+        "present-in — the variable occurs in this file, with its physical type",
+        "defined-by — the definition this variable implements (the authoritative edge)",
+        "has-candidate-definitions — inferred candidates, carrying evidence and score",
+        "owned-by — the team responsible for maintaining the definition",
+        "accessible-by — the group granted read access",
+        "classified-by — the classification or code list that defines the value domain"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Reference shape",
+      "items": [
+        "{ predicate, target: { service, entity_type, key, as_of }, provenance }",
+        "target is a closed node reference; the predicate is carried by the field or the edge list entry",
+        "String form: urn:ssb:<service>:<entity-type>:<key>[@<as-of>]",
+        "Example: urn:ssb:vardef:variable-definition:a1b2c3d4@2026-10-29",
+        "Per-predicate payload examples are in docs/metadata-relationships.md"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Rules",
+      "items": [
+        "Each predicate declares cardinality, requiredness, as_of, resolution rule, inverse, provenance and status",
+        "Typed field where cardinality is constrained; open edge list where it is not",
+        "No shadowing: each concept is owned by exactly one entity",
+        "Every edge carries provenance: authored, inferred or imported"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Out of scope",
+      "items": [
+        "All klass-owned relationships: family, version, parent codes, correspondence tables",
+        "datadoc edges below has-candidate-definitions: data source, sentinel codes, subject area, owning section",
+        "The model may be expanded to these later if needed"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Not modelled",
+      "items": [
+        "Value objects stay inline: time-period, contact, language-string",
+        "Not nodes: pseudonymization key, free-URL fields",
+        "Definition-to-definition edges (same-as, supersedes, merged-into, derived-from) cannot be drawn as self-edges"
+      ]
+    }
+  ]
+}

@@ -17,3 +17,7 @@ ssb-dataportal/
 datadoc-service/
 metamapper/
 metamapper-dispatcher/
+
+# Archify build workspace (the published diagram lives in docs/diagrams/)
+.archify/
+docs/diagrams/*.delivery.json
