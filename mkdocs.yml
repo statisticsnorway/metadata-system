@@ -1,5 +1,10 @@
 site_name: 'Metadata'
 nav:
   - Home: 'index.md'
+  - Metadata relationships: 'metadata-relationships.md'
+  - Diagrams:
+      - Relationship model: 'diagrams/index.md'
+  - ADRs:
+      - '0001 Structured relationship model': 'adr/0001-structured-relationship-model.md'
 plugins:
   - techdocs-core

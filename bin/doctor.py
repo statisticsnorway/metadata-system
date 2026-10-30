@@ -49,34 +49,28 @@ def check_health():
             "url": "https://git-scm.com - "
         },
         {
-            "command": "pipx --version",
-            "error": "pipx is not installed",
-            "hint": "Mac: brew install pipx, Win: scoop install pipx",
-            "url": "https://pipx.pypa.io/latest/installation/"
+            "command": "uv --version",
+            "error": "uv is not installed",
+            "hint": "Mac: brew install uv, Win: scoop install uv",
+            "url": "https://docs.astral.sh/uv/getting-started/installation/"
         },
         {
             "command": "pre-commit --version",
             "error": "pre-commit is not installed",
-            "hint": "pipx install pre-commit`",
+            "hint": "uv tool install pre-commit",
             "url": "https://pre-commit.com"
         },
         {
             "command": "mkdocs --version",
             "error": "mkdocs is not installed",
-            "hint": "pipx install mkdocs",
+            "hint": "uv tool install mkdocs",
             "url": "https://www.mkdocs.org/getting-started/"
         },
         {
-            "command": "pipx list --include-injected | grep mkdocs | grep mkdocs-techdocs-core",
+            "command": "uv tool list --show-with | grep mkdocs | grep mkdocs-techdocs-core",
             "error": "mkdocs is missing the techdocs plugin",
-            "hint": "pipx inject mkdocs mkdocs-techdocs-core",
+            "hint": "uv tool install mkdocs --with mkdocs-techdocs-core",
             "url": "https://github.com/backstage/mkdocs-techdocs-core"
-        },
-        {
-            "command": "plantuml --version",
-            "error": "plantuml is not installed",
-            "hint": "Mac: brew install plantuml`",
-            "url": "https://pypi.org/project/plantuml-markdown/#using-a-local-plantuml-binary"
         }
     ]
 
