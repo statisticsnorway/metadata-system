@@ -9,6 +9,7 @@ authored here; the rest are snapshots copied from the sibling repositories by
 ## This repository
 
 - [0001 — Relationships between metadata entities are typed edges](0001-structured-relationship-model.md)
+- [0002 — Variable definition and instance fields have separate ownership](0002-variable-definition-and-instance-fields.md)
 
 ## vardef
 
