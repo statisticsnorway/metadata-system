@@ -81,7 +81,7 @@ specified in [metadata-relationships](../metadata-relationships.md).
 ## Consequences
 
 - `vardef` gains alias support, consolidation predicates, and a provisional marker.
-- `datadoc-service` gains `defined-by` and `candidate-definition`, and loses the fields
+- `datadoc-service` gains `defined-by` and `has-candidate-definitions`, and loses the fields
   whose concepts are owned elsewhere. Which fields those are is not yet settled.
 - Every service that writes a reference must resolve it at write time, and a periodic
   audit must report dangling references.
