@@ -2,6 +2,7 @@
 
 - **Status:** proposed
 - **Date:** 2026-10-29
+- **Authority:** @statisticsnorway/dapla-metadata-developers
 - **Supersedes:** nothing
 
 ## Context and Problem Statement

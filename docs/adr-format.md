@@ -7,7 +7,7 @@ and its child repositories. It is the source of truth for the format, not for
 the decisions owned by each repository.
 
 The template below is a lightweight use of [MADR](https://adr.github.io/madr/),
-with status and date written as Markdown list items to match the existing ADR
+with metadata written as Markdown list items to match the existing ADR
 metadata and publication tooling.
 
 ## Authoring conventions
@@ -18,6 +18,8 @@ metadata and publication tooling.
   locations and numbering.
 - Record the status (`proposed`, `accepted`, `rejected`, `deprecated`, or
   `superseded`) and date (`YYYY-MM-DD`). A proposed decision is not yet accepted.
+- Include `Authority` in the metadata, defaulting to
+  `@statisticsnorway/dapla-metadata-developers`.
 - Explain the problem, considered options, chosen option and rationale, and
   consequences. Include both benefits and costs; record genuine alternatives
   rather than inventing options to fill the template.
@@ -42,6 +44,7 @@ they help explain or verify the decision.
 
 - **Status:** proposed
 - **Date:** YYYY-MM-DD
+- **Authority:** @statisticsnorway/dapla-metadata-developers
 
 ## Context and Problem Statement
 

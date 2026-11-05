@@ -2,6 +2,7 @@
 
 - **Status:** proposed
 - **Date:** 2026-11-02
+- **Authority:** @statisticsnorway/dapla-metadata-developers
 - **Supersedes:** nothing
 - **Related:** [ADR 0001 — Relationships between metadata entities are typed edges](0001-structured-relationship-model.md)
 
