@@ -5,7 +5,7 @@
 - **Supersedes:** nothing
 - **Related:** [ADR 0001 — Relationships between metadata entities are typed edges](0001-structured-relationship-model.md)
 
-## Context
+## Context and Problem Statement
 
 The Metadata System currently spreads related metadata across variable definitions in
 `vardef` and variable instances in the
@@ -28,7 +28,23 @@ decides which _fields and concepts_ belong on a variable definition, which belon
 variable instance, which are derived, and which are removed. It does not redefine the
 relationship representation itself.
 
-## Decision
+## Considered Options
+
+- Separate semantic definition ownership from instance occurrence and representation
+  facts, deriving or removing fields where appropriate.
+- Allow instance overrides of definition fields.
+- Keep global `short_name` uniqueness.
+- Make every observed physical name an accepted alias.
+- Require unit types and subject fields at definition creation.
+- Keep a generic comment field.
+- Keep `custom_type` as an escape hatch.
+
+## Decision Outcome
+
+Chosen option: "Separate semantic definition ownership from instance occurrence and
+representation facts", because it reduces up-front coordination and manual entry
+while keeping ownership explicit. The trade-off is greater reliance on candidate
+matching, validation and later consolidation.
 
 ### Ownership test
 
@@ -138,7 +154,7 @@ Special and sentinel values are deferred. Klass variants are a likely future mec
 but this ADR does not create a special-value field or relationship before a concrete
 requirement exists.
 
-## How this assists the goals
+### How this assists the goals
 
 | goal                       | assistance from this decision                                                                                                 | remaining work                                                                     |
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
@@ -151,7 +167,25 @@ The intended trade-off is less up-front coordination and manual entry in exchang
 better candidate matching, validation and later consolidation. This ADR enables those
 workflows; it does not implement them.
 
-## Rejected alternatives
+### Consequences
+
+- `vardef` must support team-scoped canonical names, structured aliases, validity-period
+  change notes and structured external sources.
+- `datadoc-service` must support classification selectors and remove the fields assigned
+  to definitions, Klass or another system.
+- Derived unit-type, subject-field and dataset-population views must expose their
+  inferred nature and source evidence; they must not become authored shadow fields.
+- Candidate matching becomes more important because team namespacing accepts more local
+  creation and therefore more possible duplicates.
+- Published canonical names remain stable, so merge/consolidation is a required future
+  capability even though its UX is not defined here.
+- Existing legacy values are migrated only when they have an explicit target; the
+  original structure is retained as a backup rather than copied into a new catch-all.
+
+## Pros and Cons of the Options
+
+The chosen option's benefits and costs are described above. The other options were
+rejected for the following reasons:
 
 - **Allow instance overrides of definition fields.** Every consumer would need a
   precedence rule, and a mismatch would be hidden instead of treated as a data-quality
@@ -167,18 +201,3 @@ workflows; it does not implement them.
   local notes, creating another ambiguous field.
 - **Keep `custom_type` as an escape hatch.** It can recreate shadowing under arbitrary
   keys and makes the ownership model impossible to validate.
-
-## Consequences
-
-- `vardef` must support team-scoped canonical names, structured aliases, validity-period
-  change notes and structured external sources.
-- `datadoc-service` must support classification selectors and remove the fields assigned
-  to definitions, Klass or another system.
-- Derived unit-type, subject-field and dataset-population views must expose their
-  inferred nature and source evidence; they must not become authored shadow fields.
-- Candidate matching becomes more important because team namespacing accepts more local
-  creation and therefore more possible duplicates.
-- Published canonical names remain stable, so merge/consolidation is a required future
-  capability even though its UX is not defined here.
-- Existing legacy values are migrated only when they have an explicit target; the
-  original structure is retained as a backup rather than copied into a new catch-all.

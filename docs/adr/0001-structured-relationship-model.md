@@ -4,7 +4,7 @@
 - **Date:** 2026-10-29
 - **Supersedes:** nothing
 
-## Context
+## Context and Problem Statement
 
 The Metadata System is a set of services that each own a part of the metadata model.
 Variable definitions live in `vardef`, classifications and codes in `klass`, variable
@@ -31,7 +31,23 @@ Consumers cannot answer "which classification defines this column?", maintainers
 cannot answer "who uses this variable definition?", and developers cannot tell an
 asserted relationship from a guessed one.
 
-## Decision
+## Considered Options
+
+- Typed, directed edges with declared properties.
+- Canonical URN only, no structure.
+- A single open edge list for every relationship.
+- A central link registry as the source of truth.
+- Edges stored in both directions.
+- Storing derived edges.
+- Allowing shadowing with a precedence rule.
+- Automatic creation of a definition for every scanned column.
+- Keeping `relatedVariableDefinitionUris` as a `related-to` catch-all.
+
+## Decision Outcome
+
+Chosen option: "Typed, directed edges with declared properties", because structured
+references and declared constraints make relationships unambiguous and enforceable
+without duplicating ownership or derived information.
 
 Relationships between entities are **typed, directed edges with declared properties**,
 specified in [metadata-relationships](../metadata-relationships.md).
@@ -55,7 +71,23 @@ specified in [metadata-relationships](../metadata-relationships.md).
    Type information in the reference removes the need to expose internal UUIDs.
 9. Version pinning is by date (`as_of`), and the resolved target is never written back.
 
-## Rejected alternatives
+### Consequences
+
+- `vardef` gains alias support, consolidation predicates, and a provisional marker.
+- `datadoc-service` gains `defined-by` and `has-candidate-definitions`, and loses the fields
+  whose concepts are owned elsewhere. Which fields those are is not yet settled.
+- Every service that writes a reference must resolve it at write time, and a periodic
+  audit must report dangling references.
+- Consumers get stable names for traversal paths instead of having to know the graph.
+- The document model's `definition_uri` and vardef's `relatedVariableDefinitionUris` are
+  scheduled for removal, not reinterpreted.
+- klass-owned relationships are out of scope for now: the nodes remain valid targets, but
+  the edges are specified later.
+
+## Pros and Cons of the Options
+
+The chosen option's benefits and costs are described above. The other options were
+rejected for the following reasons:
 
 - **Canonical URN only, no structure.** A URN cannot express cardinality, requiredness,
   provenance, or a resolution rule, and it is still just a string.
@@ -77,16 +109,3 @@ specified in [metadata-relationships](../metadata-relationships.md).
   search and human confirmation come first; provisional creation is the last resort.
 - **Keeping `relatedVariableDefinitionUris` as a `related-to` catch-all.** It is the
   ambiguity this decision removes, and it would be used.
-
-## Consequences
-
-- `vardef` gains alias support, consolidation predicates, and a provisional marker.
-- `datadoc-service` gains `defined-by` and `has-candidate-definitions`, and loses the fields
-  whose concepts are owned elsewhere. Which fields those are is not yet settled.
-- Every service that writes a reference must resolve it at write time, and a periodic
-  audit must report dangling references.
-- Consumers get stable names for traversal paths instead of having to know the graph.
-- The document model's `definition_uri` and vardef's `relatedVariableDefinitionUris` are
-  scheduled for removal, not reinterpreted.
-- klass-owned relationships are out of scope for now: the nodes remain valid targets, but
-  the edges are specified later.
