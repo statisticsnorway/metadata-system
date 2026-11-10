@@ -1,0 +1,15 @@
+@import url("https://cdn.jsdelivr.net/npm/@statisticsnorway/design-css@0.2.4/dist/src/fonts/fonts.css");
+@import url("https://cdn.jsdelivr.net/npm/@digdir/designsystemet-css@1.23.0/dist/src/index.min.css");
+@import url("https://cdn.jsdelivr.net/npm/@statisticsnorway/design-css@0.2.4/dist/theme/ssb.css");
+
+:root {
+  --md-primary-fg-color: var(--ds-color-primary-base-default);
+  --md-primary-fg-color--light: var(--ds-color-primary-base-hover);
+  --md-primary-fg-color--dark: var(--ds-color-primary-base-active);
+  --md-accent-fg-color: var(--ds-color-secondary-base-default);
+  --md-typeset-a-color: var(--ds-color-primary-text-subtle);
+}
+
+body {
+  font-family: var(--ds-font-family);
+}

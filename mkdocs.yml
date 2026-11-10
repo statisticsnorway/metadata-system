@@ -1,4 +1,6 @@
 site_name: "Metadata"
+extra_css:
+  - "stylesheets/ssb-design-system.css"
 nav:
   - Home: "index.md"
   - Metadata relationships: "metadata-relationships.md"
@@ -22,3 +24,4 @@ nav:
       # adr-sources-end
 plugins:
   - techdocs-core
+  - include-markdown

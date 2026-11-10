@@ -1,2 +1,1 @@
-# Dapla Metadata System
-
+{% include-markdown "../README.md" %}
