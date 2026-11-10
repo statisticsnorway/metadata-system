@@ -12,7 +12,7 @@ install: install-tools doctor update-git-repos ## Install the dev environment (t
 .PHONY: install-tools
 install-tools: ## Install the dev tools with uv
 	@uv tool install pre-commit
-	@uv tool install mkdocs --with mkdocs-techdocs-core
+	@uv tool install mkdocs --with mkdocs-techdocs-core --with mkdocs-include-markdown-plugin
 	@uv tool update-shell
 
 .PHONY: update-readme

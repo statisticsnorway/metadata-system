@@ -10,12 +10,14 @@ on:
       - main
     paths:
       - 'mkdocs.yml'
+      - 'README.md'
       - 'docs/**'
   pull_request:
     branches:
       - main
     paths:
       - 'mkdocs.yml'
+      - 'README.md'
       - 'docs/**'
   workflow_dispatch:
 
@@ -38,7 +40,7 @@ jobs:
           python-version: 3.x
 
       - name: Install MkDocs
-        run: pip install mkdocs-material mkdocs-techdocs-core
+        run: pip install mkdocs-material mkdocs-techdocs-core mkdocs-include-markdown-plugin
 
       - name: Build site
         run: mkdocs build --strict

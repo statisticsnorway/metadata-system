@@ -55,9 +55,9 @@ diff only reflects real edits. Preview with `make serve-docs`;
 ## ADRs
 
 The canonical ADR format is **MADR**, defined in the
-[format, template and conventions guide](docs/adr-format.md) in this repository.
+[format, template and conventions guide](https://statisticsnorway.github.io/metadata-system/adr-format/) in this repository.
 Child-repository agent instructions should
-[reference this guide](docs/adr-format.md#child-repository-agents) rather than
+[reference this guide](https://statisticsnorway.github.io/metadata-system/adr-format/#child-repository-agents) rather than
 maintain a separate template.
 
 ADRs from the other repositories are copied into `docs/adr/<repo>/` and published
