@@ -28,4 +28,4 @@ docs/diagrams/*.finalize-summary.json
 docs/diagrams/*.browser-check.json
 
 # Secrets for local infrastructure
-/local-dev/.env.local
+/local-dev/.env

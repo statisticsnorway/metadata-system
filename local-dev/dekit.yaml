@@ -1,0 +1,27 @@
+tasks:
+  datadoc:
+    label: Datadoc Service
+    cmd:
+      - bash
+      - -c
+      - set -a; source .env; set +a; exec ./start.sh datadoc
+    autostart: true
+    autorestart: never
+
+  metamapper:
+    label: MetaMapper
+    cmd:
+      - bash
+      - -c
+      - set -a; source .env; set +a; exec ./start.sh metamapper
+    autostart: true
+    autorestart: never
+
+  dispatcher:
+    label: MetaMapper Dispatcher
+    cmd:
+      - bash
+      - -c
+      - set -a; source .env; set +a; exec ./start.sh dispatcher
+    autostart: true
+    autorestart: never
