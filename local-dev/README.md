@@ -1,6 +1,6 @@
 # Local development
 
-This directory contains the setup for running the services locally.
+This directory contains the setup for running the services locally. The repositories are expected to be located in the same parent directory.
 
 ## Configure the local environment
 
