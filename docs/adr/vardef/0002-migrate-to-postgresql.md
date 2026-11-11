@@ -106,4 +106,4 @@ Each of the following is a further decision that this ADR deliberately does not 
 
 ---
 
-*Copied from [statisticsnorway/vardef@08898c5](https://github.com/statisticsnorway/vardef/blob/08898c5/docs/adr/0002-migrate-to-postgresql.md) on 2026-10-30 by `make collect-adrs`. The canonical version is maintained in that repository.*
+*Copied from [statisticsnorway/vardef@8e8196a](https://github.com/statisticsnorway/vardef/blob/8e8196a/docs/adr/0002-migrate-to-postgresql.md) on 2026-11-11 by `make collect-adrs`. The canonical version is maintained in that repository.*

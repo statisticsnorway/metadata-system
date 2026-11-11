@@ -58,7 +58,7 @@ the name of each type as a string, `physicalTypeName` and `logicalTypeName`, and
 5. **A DatasetVariable with no links is deleted.** Nothing in the database does this, because a foreign key cascade fires on
    deleting a parent and cannot express "delete when no longer referenced" (see ADR0004). It is the application's
    responsibility to delete unlinked DatasetVariables whenever links change, that is when a file's DatasetVariables are replaced and
-   when task completion deletes files. This is not implemented yet.
+   when task completion deletes files. 
 
 ### Positive consequences
 
@@ -131,4 +131,4 @@ the name of each type as a string, `physicalTypeName` and `logicalTypeName`, and
 
 ---
 
-*Copied from [statisticsnorway/datadoc-service@ab0fc6d](https://github.com/statisticsnorway/datadoc-service/blob/ab0fc6d/docs/adr/0005-dataset-variables-are-identified-by-short-name.md) on 2026-10-30 by `make collect-adrs`. The canonical version is maintained in that repository.*
+*Copied from [statisticsnorway/datadoc-service@dfee8a8](https://github.com/statisticsnorway/datadoc-service/blob/dfee8a8/docs/adr/0005-dataset-variables-are-identified-by-short-name.md) on 2026-11-11 by `make collect-adrs`. The canonical version is maintained in that repository.*
