@@ -1,0 +1,22 @@
+version: "0.5"
+
+is_strict: true
+
+processes:
+  datadoc:
+    description: Datadoc Service
+    command: "./start.sh datadoc"
+    availability:
+      restart: "no"
+
+  metamapper:
+    description: MetaMapper
+    command: "./start.sh metamapper"
+    availability:
+      restart: "no"
+
+  dispatcher:
+    description: MetaMapper Dispatcher
+    command: "./start.sh dispatcher"
+    availability:
+      restart: "no"

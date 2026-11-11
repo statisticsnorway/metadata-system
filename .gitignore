@@ -26,3 +26,6 @@ docs/diagrams/*.delivery.json
 docs/diagrams/*.finalize.json
 docs/diagrams/*.finalize-summary.json
 docs/diagrams/*.browser-check.json
+
+# Secrets for local infrastructure
+/local-dev/.env.local
