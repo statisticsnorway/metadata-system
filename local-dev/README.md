@@ -5,10 +5,10 @@ The repositories are expected to be located in the same parent directory as meta
 
 ## Configure the local environment
 
-Create your local environment file from the provided example:
+Create your local environment file from the provided example. From the metadata-system/local-dev directory, run:
 
 ```bash
-cp metadata-system/local-dev/.env.example metadata-system/local-dev/.env
+cp .env.example .env
 ```
 Open `.env` and provide values for all variables.
 
