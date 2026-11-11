@@ -13,17 +13,24 @@ authored here; the rest are snapshots copied from the sibling repositories by
 
 ## vardef
 
-Snapshot of [statisticsnorway/vardef@08898c5](https://github.com/statisticsnorway/vardef/tree/08898c5/docs/adr).
+Snapshot of [statisticsnorway/vardef@8e8196a](https://github.com/statisticsnorway/vardef/tree/8e8196a/docs/adr).
 
 - [ADR0001 - MongoDB Atlas is the datastore for variable definitions](vardef/0001-mongodb-atlas-as-datastore.md) — *accepted*, *2026-08-31*
 - [ADR0002 - Migrate the datastore from MongoDB Atlas to PostgreSQL](vardef/0002-migrate-to-postgresql.md) — *proposed*, *2026-08-31*
 
 ## datadoc-service
 
-Snapshot of [statisticsnorway/datadoc-service@ab0fc6d](https://github.com/statisticsnorway/datadoc-service/tree/ab0fc6d/docs/adr).
+Snapshot of [statisticsnorway/datadoc-service@dfee8a8](https://github.com/statisticsnorway/datadoc-service/tree/dfee8a8/docs/adr).
 
 - [ADR0001 - Schema changes via Hibernate `hbm2ddl: update` until a case requires a migration framework](datadoc-service/0001-schema-changes-via-hbm2ddl-update.md) — *accepted*, *2026-08-27*
 - [ADR0002 - Public identifier and primary key are chosen separately for each entity](datadoc-service/0002-choice-of-entity-identifiers.md) — *accepted*, *2026-08-28*
 - [ADR0003 - Adopt Flyway for schema migrations](datadoc-service/0003-adopt-flyway-for-schema-migrations.md) — *accepted*, *2026-10-12*
 - [ADR0004 - Dataset variables are removed by database cascade](datadoc-service/0004-cascade-deletes-for-dataset-variables.md) — *accepted*, *2026-10-21*
 - [ADR0005 - Dataset variables are identified by short name and data type within a dataset](datadoc-service/0005-dataset-variables-are-identified-by-short-name.md) — *accepted*, *2026-10-21*
+- [0006 - A Dataset groups related data files](datadoc-service/0006-dataset-identity.md) — *proposed*, *2026-11-11*
+
+## metamapper
+
+Snapshot of [statisticsnorway/metamapper@9b490f5](https://github.com/statisticsnorway/metamapper/tree/9b490f5/docs/adr).
+
+- [0001 — Folder-level PAM entitlement for eligible buckets](metamapper/0001-folder-entitlement-scoped-grants.md) — *accepted*, *2026-11-10*

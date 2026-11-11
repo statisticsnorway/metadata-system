@@ -82,4 +82,4 @@ Considered because it would guarantee the schema always matches the entities, re
 
 ---
 
-*Copied from [statisticsnorway/datadoc-service@ab0fc6d](https://github.com/statisticsnorway/datadoc-service/blob/ab0fc6d/docs/adr/0001-schema-changes-via-hbm2ddl-update.md) on 2026-10-30 by `make collect-adrs`. The canonical version is maintained in that repository.*
+*Copied from [statisticsnorway/datadoc-service@dfee8a8](https://github.com/statisticsnorway/datadoc-service/blob/dfee8a8/docs/adr/0001-schema-changes-via-hbm2ddl-update.md) on 2026-11-11 by `make collect-adrs`. The canonical version is maintained in that repository.*
