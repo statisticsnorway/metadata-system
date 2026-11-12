@@ -1,0 +1,35 @@
+name: metadata-system-local
+
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: datadoc
+      POSTGRES_USER: datadoc
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - datadoc-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U datadoc -d datadoc
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  fake-gcs:
+    image: fsouza/fake-gcs-server:1.53.1
+    command:
+      - -scheme
+      - http
+      - -port
+      - "4443"
+    ports:
+      - "127.0.0.1:4443:4443"
+    volumes:
+      - ../../metamapper/src/test/resources/static-data:/data/local-bucket/data:ro
+
+volumes:
+  datadoc-postgres:
