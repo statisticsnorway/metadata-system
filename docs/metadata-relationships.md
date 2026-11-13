@@ -8,7 +8,9 @@ It describes the **target state**, not the current state of any repository. Wher
 two differ, there is a migration note in [section 9](#9-legacy-and-migration). The
 relationship decision is recorded in [ADR 0001](adr/0001-structured-relationship-model.md)
 and the field ownership decision in
-[ADR 0002](adr/0002-variable-definition-and-instance-fields.md).
+[ADR 0002](adr/0002-variable-definition-and-instance-fields.md). The naming recommendation
+is recorded separately in [ADR 0003](adr/0003-team-scoped-variable-definition-names.md).
+These ADRs are Proposed; this reference does not verify live service behaviour.
 
 Audience: consumers of metadata, maintainers of metadata, and developers of the
 services.
@@ -40,8 +42,9 @@ relationship model alone does not implement candidate ranking, alias review, met
 suggestions or merge workflows.
 
 The intended trade-off is to replace up-front coordination with automated discovery and
-later consolidation. Team namespacing increases definition creation velocity, while
-candidate evidence, aliases and future merge support control fragmentation.
+later consolidation. Team namespacing is expected to increase definition creation
+velocity; this is a hypothesis, not a measured result. Candidate evidence, aliases and
+future merge support address fragmentation.
 
 | goal                         | model response                                                                                                              | remaining implementation                                                                |
 | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
@@ -182,6 +185,12 @@ The following table is normative. “Derived” means that a service may expose 
 projection, but the value is not authored on the entity and is never a second source of
 truth.
 
+Naming follows the Proposed recommendation in [ADR 0003](adr/0003-team-scoped-variable-definition-names.md):
+canonical names use lowercase with underscores and compare exactly; accepted aliases
+compare by exact stored value. Both share one namespace per definition-owning Dapla
+team. Identical names across teams produce no collision warning or publication gate.
+Semantic duplicates introduce no new publication gate and remain future work.
+
 | concept or field                                                                         | owner               | rule                                                                                                      |
 | ---------------------------------------------------------------------------------------- | ------------------- | --------------------------------------------------------------------------------------------------------- |
 | meaning, `definition`, semantic `name`                                                   | variable definition | One definition owns the meaning.                                                                          |
@@ -191,7 +200,7 @@ truth.
 | `measurement_type`                                                                       | variable definition | Broad Klass level-1 measurement type.                                                                     |
 | `temporality_type`                                                                       | variable definition | Describes the variable's temporal meaning, not this dataset's coverage.                                   |
 | personal-data and special-category status                                                | variable definition | Intrinsic semantic properties. Pseudonymisation is handled elsewhere.                                     |
-| classification series                                                                    | variable definition | `classified-by` identifies the series.                                                                    |
+| classification series                                                                    | variable definition | Optional (`0..1`); `classified-by` identifies a value-domain series, not a subject-area taxonomy.           |
 | classification selector                                                                  | variable instance   | Selects version, variant, level and/or date range within that series.                                     |
 | physical `short_name`                                                                    | variable instance   | The actual tidy column name; mismatch with the canonical name is accepted and can produce alias evidence. |
 | `data_type`, `format`                                                                    | variable instance   | Physical representation in this dataset.                                                                  |
@@ -367,11 +376,18 @@ set and requires evidence and score on each candidate edge; it does not fix the
 ranking):
 
 1. A confirmed `defined-by` for the same short name elsewhere in the same data product.
-2. Exact short-name match within the owning team's namespace.
-3. Alias match (`has-alias`).
+2. Exact canonical short-name match with explicit definition-owner team context.
+3. Accepted-alias match (`has-alias`) by exact stored value within that context,
+   requiring human confirmation before storing the definition ID.
 4. Vardok id mapping, for migrated data only.
 5. Attribute agreement — measurement type/unit, classification, subject and source.
 6. Text similarity on name and definition. Always `inferred`, never auto-confirming.
+
+Under [ADR 0003](adr/0003-team-scoped-variable-definition-names.md), canonical-name
+lookup requires `(definition owner team, canonical short_name)`. Do not infer this
+context from the instance's team: cross-team references are allowed. The resulting
+stable `definitionId`, not the lookup pair or alias, is stored as the actual
+`defined-by` reference key.
 
 Duplicates are reversible by design. `same-as` asserts that two definitions describe
 the same variable; `supersedes` records that one replaced another; `merged-into` marks
@@ -480,11 +496,11 @@ Recorded so they are not silently assumed:
 3. **`same-as` clusters with conflicting attributes.** One rule must be chosen:
    attributes must agree before a cluster forms, a cluster has a designated
    canonical definition, or attributes are unioned.
-4. **Merge UX.** Canonical names cannot change after publication. If we are to allow
-   variable definitions to change owning team a future merge flow
-   must transfer relevant instance references to a surviving definition and preserve the
-   losing definition as a redirect. The exact user experience is intentionally out of
-   scope here.
+4. **Merge UX.** Canonical names cannot change after publication. A future merge flow
+   must transfer relevant instance references to a surviving definition and preserve
+   the losing definition as a redirect. The exact user experience is intentionally out
+   of scope here. Definition ownership transfer and team slug changes are separate,
+   unresolved namespace-lifecycle follow-up in [ADR 0003](adr/0003-team-scoped-variable-definition-names.md).
 5. **Classification selector wire shape.** The semantic shape is settled, but the
    service contract must choose exact names and validation errors for version, variant,
    level and date-range selectors.

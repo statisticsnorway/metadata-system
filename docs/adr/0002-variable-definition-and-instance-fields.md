@@ -14,15 +14,13 @@ datadoc model. Variable definitions and variable instances contain overlapping f
 but the overlap does not consistently distinguish semantic meaning from the way a
 dataset represents a variable.
 
-Our Variable definitions system currently has four major issues:
+This ADR addresses three major issues:
 
 1. Maintainers must complete too many fields and make decisions that can be derived
    later.
-2. Global uniqueness of `short_name` forces organisation-wide coordination and slows
-   definition creation.
-3. Variable instances try to describe meaning, physical representation, dataset scope
+2. Variable instances try to describe meaning, physical representation, dataset scope
    and processing concerns at the same time.
-4. Users receive too little automated help to find definitions and complete metadata.
+3. Users receive too little automated help to find definitions and complete metadata.
 
 The relationship model in ADR 0001 establishes the edges between entities. This ADR
 decides which _fields and concepts_ belong on a variable definition, which belong on a
@@ -34,7 +32,6 @@ relationship representation itself.
 - Separate semantic definition ownership from instance occurrence and representation
   facts, deriving or removing fields where appropriate.
 - Allow instance overrides of definition fields.
-- Keep global `short_name` uniqueness.
 - Make every observed physical name an accepted alias.
 - Require unit types and subject fields at definition creation.
 - Keep a generic comment field.
@@ -67,8 +64,8 @@ The variable definition owns semantic meaning and intrinsic properties:
 | concept                          | decision                                                                                                         |
 | -------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
 | semantic `name` and `definition` | Definition-owned.                                                                                                |
-| canonical `short_name`           | Definition-owned and unique within the owning team. It cannot change after publication.                          |
-| aliases                          | Definition-owned structured values with status and evidence. Accepted aliases are unique within the owning team. |
+| canonical `short_name`           | Definition-owned. It cannot change after publication.                                                             |
+| aliases                          | Definition-owned structured values with status and evidence.                                                      |
 | `measurement_type`               | Definition-owned broad Klass level-1 measurement type.                                                           |
 | `temporality_type`               | Definition-owned temporal meaning of the variable.                                                               |
 | personal-data status             | Definition-owned intrinsic property.                                                                             |
@@ -77,10 +74,6 @@ The variable definition owns semantic meaning and intrinsic properties:
 | unit types and subject fields    | Not authored definition fields. They are derived projections from linked instances, datasets and products.       |
 | change note                      | Attached to each validity period and explains the change represented by that period.                             |
 | external definition sources      | Structured source references attached to the validity period.                                                    |
-
-Definitions use team namespacing rather than global `short_name` uniqueness. This
-reduces coordination during creation. Candidate search and later consolidation handle
-the resulting risk of duplicate concepts.
 
 ### Variable-instance fields
 
@@ -122,7 +115,7 @@ An alias is not a bare string. It records a value, status, provenance, source ev
 and timestamps. The statuses are:
 
 - `proposed`: inferred evidence that requires review;
-- `accepted`: an approved candidate signal, unique within the owning team;
+- `accepted`: an approved candidate signal;
 - `rejected`: retained evidence that must not be used as an authoritative match.
 
 An accepted `defined-by` link may produce a proposed alias from the instance's physical
@@ -160,7 +153,7 @@ requirement exists.
 | goal                       | assistance from this decision                                                                                                 | remaining work                                                                     |
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
 | Reduce maintainer load     | Removes fields that can be derived or belong elsewhere; does not require unit types or subject fields up front.               | Make user interfaces distinguish required, suggested, derived and optional values. |
-| Increase creation velocity | Team-scoped names remove organisation-wide coordination. Physical representation does not block semantic definition creation. | Candidate search before provisional creation and future merge/consolidation UX.    |
+| Increase creation velocity | Physical representation does not block semantic definition creation.                                                          | Candidate search before provisional creation and future merge/consolidation UX.    |
 | Make instances effective   | Instances focus on occurrence, representation and dataset scope instead of duplicating semantic definition fields.            | Enforce the ownership partition in schemas and APIs.                               |
 | Provide automated help     | Classification selectors, aliases, candidate evidence and derived projections create explicit automation seams.               | Implement matching, selector suggestions, alias review and derived dataset views.  |
 
@@ -170,14 +163,12 @@ workflows; it does not implement them.
 
 ### Consequences
 
-- `vardef` must support team-scoped canonical names, structured aliases, validity-period
+- `vardef` must support structured aliases, validity-period
   change notes and structured external sources.
 - `datadoc-service` must support classification selectors and remove the fields assigned
   to definitions, Klass or another system.
 - Derived unit-type, subject-field and dataset-population views must expose their
   inferred nature and source evidence; they must not become authored shadow fields.
-- Candidate matching becomes more important because team namespacing accepts more local
-  creation and therefore more possible duplicates.
 - Published canonical names remain stable, so merge/consolidation is a required future
   capability even though its UX is not defined here.
 - Existing legacy values are migrated only when they have an explicit target; the
@@ -191,8 +182,6 @@ rejected for the following reasons:
 - **Allow instance overrides of definition fields.** Every consumer would need a
   precedence rule, and a mismatch would be hidden instead of treated as a data-quality
   signal.
-- **Keep global `short_name` uniqueness.** It prevents some duplicates but makes every
-  team coordinate across the organisation before publishing.
 - **Make every observed physical name an accepted alias.** A bad link could permanently
   pollute a shared definition. Proposed aliases preserve evidence without making it
   authoritative.

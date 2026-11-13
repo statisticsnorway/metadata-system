@@ -10,6 +10,7 @@ authored here; the rest are snapshots copied from the sibling repositories by
 
 - [0001 — Relationships between metadata entities are typed edges](0001-structured-relationship-model.md)
 - [0002 — Variable definition and instance fields have separate ownership](0002-variable-definition-and-instance-fields.md)
+- [0003 - Variable definition names are unique within the owning team](0003-team-scoped-variable-definition-names.md)
 
 ## vardef
 

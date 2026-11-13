@@ -11,6 +11,7 @@ nav:
       - Format and conventions: "adr-format.md"
       - "0001 — Relationships between metadata entities are typed edges": "adr/0001-structured-relationship-model.md"
       - "0002 — Variable definition and instance fields have separate ownership": "adr/0002-variable-definition-and-instance-fields.md"
+      - "0003 - Variable definition names are unique within the owning team": "adr/0003-team-scoped-variable-definition-names.md"
       # adr-sources-start
       - 'vardef':
           - 'ADR0001 - MongoDB Atlas is the datastore for variable definitions': 'adr/vardef/0001-mongodb-atlas-as-datastore.md'
