@@ -13,24 +13,45 @@ authored here; the rest are snapshots copied from the sibling repositories by
 
 ## vardef
 
-Snapshot of [statisticsnorway/vardef@8e8196a](https://github.com/statisticsnorway/vardef/tree/8e8196a/docs/adr).
+Snapshot of [statisticsnorway/vardef@9d18d0b220b53e13ca717f9ff832fd45de06aff0](https://github.com/statisticsnorway/vardef/tree/9d18d0b220b53e13ca717f9ff832fd45de06aff0/docs/adr).
 
-- [ADR0001 - MongoDB Atlas is the datastore for variable definitions](vardef/0001-mongodb-atlas-as-datastore.md) — *accepted*, *2026-08-31*
-- [ADR0002 - Migrate the datastore from MongoDB Atlas to PostgreSQL](vardef/0002-migrate-to-postgresql.md) — *proposed*, *2026-08-31*
+- [ADR0001 - MongoDB Atlas is the datastore for variable definitions](vardef/0001-mongodb-atlas-as-datastore.md) — _accepted_, _2026-08-31_
+- [ADR0002 - Migrate the datastore from MongoDB Atlas to PostgreSQL](vardef/0002-migrate-to-postgresql.md) — _proposed_, _2026-08-31_
 
 ## datadoc-service
 
-Snapshot of [statisticsnorway/datadoc-service@dfee8a8](https://github.com/statisticsnorway/datadoc-service/tree/dfee8a8/docs/adr).
+Snapshot of [statisticsnorway/datadoc-service@e4dff72de9b70aed9ea8665397112500208ffd5a](https://github.com/statisticsnorway/datadoc-service/tree/e4dff72de9b70aed9ea8665397112500208ffd5a/docs/adr).
 
-- [ADR0001 - Schema changes via Hibernate `hbm2ddl: update` until a case requires a migration framework](datadoc-service/0001-schema-changes-via-hbm2ddl-update.md) — *accepted*, *2026-08-27*
-- [ADR0002 - Public identifier and primary key are chosen separately for each entity](datadoc-service/0002-choice-of-entity-identifiers.md) — *accepted*, *2026-08-28*
-- [ADR0003 - Adopt Flyway for schema migrations](datadoc-service/0003-adopt-flyway-for-schema-migrations.md) — *accepted*, *2026-10-12*
-- [ADR0004 - Dataset variables are removed by database cascade](datadoc-service/0004-cascade-deletes-for-dataset-variables.md) — *accepted*, *2026-10-21*
-- [ADR0005 - Dataset variables are identified by short name and data type within a dataset](datadoc-service/0005-dataset-variables-are-identified-by-short-name.md) — *accepted*, *2026-10-21*
-- [0006 - A Dataset groups related data files](datadoc-service/0006-dataset-identity.md) — *proposed*, *2026-11-11*
+- [ADR0001 - Schema changes via Hibernate `hbm2ddl: update` until a case requires a migration framework](datadoc-service/0001-schema-changes-via-hbm2ddl-update.md) — _accepted_, _2026-08-27_
+- [ADR0002 - Public identifier and primary key are chosen separately for each entity](datadoc-service/0002-choice-of-entity-identifiers.md) — _accepted_, _2026-08-28_
+- [ADR0003 - Adopt Flyway for schema migrations](datadoc-service/0003-adopt-flyway-for-schema-migrations.md) — _accepted_, _2026-10-12_
+- [ADR0004 - Dataset variables are removed by database cascade](datadoc-service/0004-cascade-deletes-for-dataset-variables.md) — _accepted_, _2026-10-21_
+- [ADR0005 - Dataset variables are identified by short name and data type within a dataset](datadoc-service/0005-dataset-variables-are-identified-by-short-name.md) — _accepted_, _2026-10-21_
+- [0006 - A Dataset groups related data files](datadoc-service/0006-dataset-identity.md) — _proposed_, _2026-11-11_
 
 ## metamapper
 
-Snapshot of [statisticsnorway/metamapper@9b490f5](https://github.com/statisticsnorway/metamapper/tree/9b490f5/docs/adr).
+Snapshot of [statisticsnorway/metamapper@31a4900a60c177de14518412898366c2eddba7c7](https://github.com/statisticsnorway/metamapper/tree/31a4900a60c177de14518412898366c2eddba7c7/docs/adr).
 
-- [0001 — Folder-level PAM entitlement for eligible buckets](metamapper/0001-folder-entitlement-scoped-grants.md) — *accepted*, *2026-11-10*
+- [0001 — Team-folder PAM entitlements and application-managed grants](metamapper/0001-folder-entitlement-scoped-grants.md) — _accepted_, _2026-11-19_
+
+## Working with ADRs
+
+The canonical ADR format is **MADR**, defined in the
+[format, template and conventions guide](https://statisticsnorway.github.io/metadata-system/adr-format/) in this repository.
+Child-repository agent instructions should
+[reference this guide](https://statisticsnorway.github.io/metadata-system/adr-format/#child-repository-agents) rather than
+maintain a separate template.
+
+ADRs from the other repositories are copied into `docs/adr/<repo>/` and published
+alongside this repository's own, so they can be read on the docs site without access to
+those repositories. The copies are committed, which keeps the docs build free of
+cross-repository access — several of the sources are internal.
+
+Refresh them from committed source ADRs. For separate clones, pass the directory
+containing them explicitly; the collector rewrites the copies, overview page and
+generated nav block in `mkdocs.yml`:
+
+```bash
+make collect-adrs
+```
