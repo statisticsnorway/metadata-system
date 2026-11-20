@@ -26,6 +26,8 @@ Local repository rules and domain decisions remain in force; resolve conflicts e
 Paths below identify separate clones, not children of this checkout. Read each
 repository's local guidance before changing it. See the catalogue for the
 [local-first Home pointer contract](docs/repositories.md#shared-guidance-resolution).
+For worktree-based tasks, create the worktree from the target repository's
+configured checkout at `$METADATA_REPOS_ROOT/<name>`.
 
 | Repository (role, status) | Clone identifier | Missing clone | Local guidance |
 | --- | --- | --- | --- |
