@@ -5,24 +5,25 @@ repositories. Repository-specific architecture, commands and domain decisions
 remain in each source repository. `git-repos.txt` is the unchanged machine list;
 the catalogue below follows its order.
 
-**Lifecycle is user-confirmed**, not inferred from GitHub archive flags, release
-dates or dependency versions. Active repositories receive ongoing development;
-stable repositories remain maintained. Deprecated repositories are historical
-references and are not consolidation or tooling-migration targets.
+## Lifecycle
 
-| Repository | Languages and role | Lifecycle | Clone identifier | Remote |
-| --- | --- | --- | --- | --- |
-| datadoc-editor | Python dataset-documentation application | deprecated | `$METADATA_REPOS_ROOT/datadoc-editor` | [GitHub](https://github.com/statisticsnorway/datadoc-editor) |
-| ssb-datadoc-model | JSON Schema with generated Java/Python models | deprecated | `$METADATA_REPOS_ROOT/ssb-datadoc-model` | [GitHub](https://github.com/statisticsnorway/ssb-datadoc-model) |
-| dapla-toolbelt-metadata | Python metadata clients and tools | stable | `$METADATA_REPOS_ROOT/dapla-toolbelt-metadata` | [GitHub](https://github.com/statisticsnorway/dapla-toolbelt-metadata) |
-| klass | Legacy Java classifications and code lists | stable | `$METADATA_REPOS_ROOT/klass` | [GitHub](https://github.com/statisticsnorway/klass) |
-| vardef | Kotlin variable definitions | stable | `$METADATA_REPOS_ROOT/vardef` | [GitHub](https://github.com/statisticsnorway/vardef) |
-| metadata-api-gateway | Kotlin API gateway | deprecated | `$METADATA_REPOS_ROOT/metadata-api-gateway` | [GitHub](https://github.com/statisticsnorway/metadata-api-gateway) |
-| dapla-metadata-iac | Terraform infrastructure | stable | `$METADATA_REPOS_ROOT/dapla-metadata-iac` | [GitHub](https://github.com/statisticsnorway/dapla-metadata-iac) |
-| ssb-dataportal | TypeScript metadata portal | active | `$METADATA_REPOS_ROOT/ssb-dataportal` | [GitHub](https://github.com/statisticsnorway/ssb-dataportal) |
-| datadoc-service | Kotlin dataset metadata | active | `$METADATA_REPOS_ROOT/datadoc-service` | [GitHub](https://github.com/statisticsnorway/datadoc-service) |
-| metamapper | Kotlin metadata extraction and access grants | active | `$METADATA_REPOS_ROOT/metamapper` | [GitHub](https://github.com/statisticsnorway/metamapper) |
-| metamapper-dispatcher | Kotlin queue and task coordination | active | `$METADATA_REPOS_ROOT/metamapper-dispatcher` | [GitHub](https://github.com/statisticsnorway/metamapper-dispatcher) |
+The lifecycle refers to the direction the team is moving in, just because a repo is labelled deprecated does not mean it is entirely unused, just that the team is working to remove or replace it. Truly deprecated and unused repos should be archived and removed from this list.
+
+## Catalogue
+
+| Repository              | Language    | role                                        | Lifecycle  | Clone identifier                               | Remote                                                                |
+| ----------------------- | ----------- | ------------------------------------------- | ---------- | ---------------------------------------------- | --------------------------------------------------------------------- |
+| datadoc-editor          | Python      | Dataset-documentation application           | deprecated | `$METADATA_REPOS_ROOT/datadoc-editor`          | [GitHub](https://github.com/statisticsnorway/datadoc-editor)          |
+| ssb-datadoc-model       | JSON Schema | Generates Java/Python models                | deprecated | `$METADATA_REPOS_ROOT/ssb-datadoc-model`       | [GitHub](https://github.com/statisticsnorway/ssb-datadoc-model)       |
+| dapla-toolbelt-metadata | Python      | metadata clients and tools                  | stable     | `$METADATA_REPOS_ROOT/dapla-toolbelt-metadata` | [GitHub](https://github.com/statisticsnorway/dapla-toolbelt-metadata) |
+| klass                   | Java        | Classifications and code lists              | stable     | `$METADATA_REPOS_ROOT/klass`                   | [GitHub](https://github.com/statisticsnorway/klass)                   |
+| vardef                  | Kotlin      | Variable definitions                        | stable     | `$METADATA_REPOS_ROOT/vardef`                  | [GitHub](https://github.com/statisticsnorway/vardef)                  |
+| metadata-api-gateway    | Kotlin      | API gateway                                 | deprecated | `$METADATA_REPOS_ROOT/metadata-api-gateway`    | [GitHub](https://github.com/statisticsnorway/metadata-api-gateway)    |
+| dapla-metadata-iac      | Terraform   | Team infrastructure                         | stable     | `$METADATA_REPOS_ROOT/dapla-metadata-iac`      | [GitHub](https://github.com/statisticsnorway/dapla-metadata-iac)      |
+| ssb-dataportal          | TypeScript  | Data portal                                 | active     | `$METADATA_REPOS_ROOT/ssb-dataportal`          | [GitHub](https://github.com/statisticsnorway/ssb-dataportal)          |
+| datadoc-service         | Kotlin      | Data products, datasets, variable instances | active     | `$METADATA_REPOS_ROOT/datadoc-service`         | [GitHub](https://github.com/statisticsnorway/datadoc-service)         |
+| metamapper              | Kotlin      | Metadata extraction                         | active     | `$METADATA_REPOS_ROOT/metamapper`              | [GitHub](https://github.com/statisticsnorway/metamapper)              |
+| metamapper-dispatcher   | Kotlin      | Queue and task coordination                 | active     | `$METADATA_REPOS_ROOT/metamapper-dispatcher`   | [GitHub](https://github.com/statisticsnorway/metamapper-dispatcher)   |
 
 Set `METADATA_REPOS_ROOT` to the directory containing the child clones. Resolve
 each clone as `$METADATA_REPOS_ROOT/<name>`; for a missing clone, select and
