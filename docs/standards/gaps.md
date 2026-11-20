@@ -4,7 +4,7 @@ These are evidence-labelled observations for planning, **not authorization** to
 change frameworks, dependencies, CI, versions or coverage thresholds. Local
 configuration remains authoritative. Lifecycle labels are the
 [user-confirmed decisions](../repositories.md), not deductions from tooling age.
-Source paths below also resolve under the catalogue's local clone paths.
+Resolve source paths under `$METADATA_REPOS_ROOT` as described in the catalogue.
 
 ## Maintained repositories
 

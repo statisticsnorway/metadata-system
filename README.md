@@ -84,7 +84,7 @@ containing them explicitly; the collector rewrites the copies, overview page and
 generated nav block in `mkdocs.yml`:
 
 ```bash
-python3 bin/collect_adrs.py --source-root /Users/mmw/code/metadata-system
+python3 bin/collect_adrs.py --source-root "$METADATA_REPOS_ROOT"
 ```
 
 `make collect-adrs` retains the default nested-clone layout. In an isolated Home
