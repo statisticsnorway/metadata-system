@@ -4,6 +4,20 @@ Create, publish and use metadata for datasets, instance variables, concept varia
 
 See [docs](https://statisticsnorway.github.io/metadata-system) for more information.
 
+## Shared development guidance
+
+This is the Home Repo for shared Metadata development guidance. Agents start
+with the root `AGENTS.md`; humans can use the
+[repository and lifecycle catalogue](docs/repositories.md),
+shared [Kotlin](docs/standards/kotlin.md), [Python](docs/standards/python.md) and
+[TypeScript](docs/standards/typescript.md) guidance,
+[documented standards gaps](docs/standards/gaps.md) and [optional skills](docs/skills.md).
+Repository-specific architecture and domain decisions remain local.
+Deprecated repositories are historical references, not consolidation targets.
+
+Standalone clones use the [local-first Home pointer contract](docs/repositories.md#shared-guidance-resolution);
+an unpushed Home branch must be activated locally before dependent work.
+
 The Metadata System is composed of a collection of libraries and services:
 
 <!-- linked-repos-start -->
@@ -65,13 +79,19 @@ alongside this repository's own, so they can be read on the docs site without ac
 those repositories. The copies are committed, which keeps the docs build free of
 cross-repository access — several of the sources are internal.
 
-Refresh them after pulling the sibling repos; `make collect-adrs` rewrites the copies,
-the overview page and the generated nav block in `mkdocs.yml`:
+Refresh them from committed source ADRs. For separate clones, pass the directory
+containing them explicitly; the collector rewrites the copies, overview page and
+generated nav block in `mkdocs.yml`:
 
 ```bash
-make update-git-repos
-make collect-adrs
+python3 bin/collect_adrs.py --source-root /Users/mmw/code/metadata-system
 ```
+
+`make collect-adrs` retains the default nested-clone layout. In an isolated Home
+worktree, use `--source-root` instead. A missing source for an existing snapshot
+or uncommitted source ADRs aborts the refresh; committed snapshots are retained.
+Each snapshot records the exact source commit. Confirm source freshness before
+refreshing, without changing decisions in the generated copies.
 
 ## Development
 

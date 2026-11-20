@@ -3,6 +3,13 @@ extra_css:
   - "stylesheets/ssb-design-system.css"
 nav:
   - Home: "index.md"
+  - Repositories: "repositories.md"
+  - Shared standards:
+      - Kotlin: "standards/kotlin.md"
+      - Python: "standards/python.md"
+      - TypeScript: "standards/typescript.md"
+      - Gaps: "standards/gaps.md"
+  - Optional skills: "skills.md"
   - Metadata relationships: "metadata-relationships.md"
   - Diagrams:
       - Relationship model: "diagrams/index.md"
@@ -23,7 +30,7 @@ nav:
           - 'ADR0005 - Dataset variables are identified by short name and data type within a dataset': 'adr/datadoc-service/0005-dataset-variables-are-identified-by-short-name.md'
           - '0006 - A Dataset groups related data files': 'adr/datadoc-service/0006-dataset-identity.md'
       - 'metamapper':
-          - '0001 — Folder-level PAM entitlement for eligible buckets': 'adr/metamapper/0001-folder-entitlement-scoped-grants.md'
+          - '0001 — Team-folder PAM entitlements and application-managed grants': 'adr/metamapper/0001-folder-entitlement-scoped-grants.md'
       # adr-sources-end
 plugins:
   - techdocs-core

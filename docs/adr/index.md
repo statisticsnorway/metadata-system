@@ -13,14 +13,14 @@ authored here; the rest are snapshots copied from the sibling repositories by
 
 ## vardef
 
-Snapshot of [statisticsnorway/vardef@8e8196a](https://github.com/statisticsnorway/vardef/tree/8e8196a/docs/adr).
+Snapshot of [statisticsnorway/vardef@9d18d0b220b53e13ca717f9ff832fd45de06aff0](https://github.com/statisticsnorway/vardef/tree/9d18d0b220b53e13ca717f9ff832fd45de06aff0/docs/adr).
 
 - [ADR0001 - MongoDB Atlas is the datastore for variable definitions](vardef/0001-mongodb-atlas-as-datastore.md) — *accepted*, *2026-08-31*
 - [ADR0002 - Migrate the datastore from MongoDB Atlas to PostgreSQL](vardef/0002-migrate-to-postgresql.md) — *proposed*, *2026-08-31*
 
 ## datadoc-service
 
-Snapshot of [statisticsnorway/datadoc-service@dfee8a8](https://github.com/statisticsnorway/datadoc-service/tree/dfee8a8/docs/adr).
+Snapshot of [statisticsnorway/datadoc-service@e4dff72de9b70aed9ea8665397112500208ffd5a](https://github.com/statisticsnorway/datadoc-service/tree/e4dff72de9b70aed9ea8665397112500208ffd5a/docs/adr).
 
 - [ADR0001 - Schema changes via Hibernate `hbm2ddl: update` until a case requires a migration framework](datadoc-service/0001-schema-changes-via-hbm2ddl-update.md) — *accepted*, *2026-08-27*
 - [ADR0002 - Public identifier and primary key are chosen separately for each entity](datadoc-service/0002-choice-of-entity-identifiers.md) — *accepted*, *2026-08-28*
@@ -31,6 +31,6 @@ Snapshot of [statisticsnorway/datadoc-service@dfee8a8](https://github.com/statis
 
 ## metamapper
 
-Snapshot of [statisticsnorway/metamapper@9b490f5](https://github.com/statisticsnorway/metamapper/tree/9b490f5/docs/adr).
+Snapshot of [statisticsnorway/metamapper@31a4900a60c177de14518412898366c2eddba7c7](https://github.com/statisticsnorway/metamapper/tree/31a4900a60c177de14518412898366c2eddba7c7/docs/adr).
 
-- [0001 — Folder-level PAM entitlement for eligible buckets](metamapper/0001-folder-entitlement-scoped-grants.md) — *accepted*, *2026-11-10*
+- [0001 — Team-folder PAM entitlements and application-managed grants](metamapper/0001-folder-entitlement-scoped-grants.md) — *accepted*, *2026-11-19*

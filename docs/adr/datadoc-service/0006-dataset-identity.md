@@ -66,4 +66,4 @@ Optional subfolders may organize files, but do not divide a Dataset. Period, ver
 
 ---
 
-*Copied from [statisticsnorway/datadoc-service@dfee8a8](https://github.com/statisticsnorway/datadoc-service/blob/dfee8a8/docs/adr/0006-dataset-identity.md) on 2026-11-11 by `make collect-adrs`. The canonical version is maintained in that repository.*
+*Copied from [statisticsnorway/datadoc-service@e4dff72de9b70aed9ea8665397112500208ffd5a](https://github.com/statisticsnorway/datadoc-service/blob/e4dff72de9b70aed9ea8665397112500208ffd5a/docs/adr/0006-dataset-identity.md) on 2026-11-20 by `make collect-adrs`. The canonical version is maintained in that repository.*

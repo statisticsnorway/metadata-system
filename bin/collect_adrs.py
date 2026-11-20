@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
-"""Copy the ADRs of the sibling repositories into docs/adr/ for publication.
+"""Copy repository ADRs into docs/adr/ for publication.
 
 The copies are committed, so the docs build needs no access to those repositories,
-several of which are internal. Re-run this after pulling the sibling repos:
+several of which are internal. Select the directory containing source clones:
 
-    make update-git-repos
-    make collect-adrs
+    python3 bin/collect_adrs.py --source-root /path/to/clones
+
+The default source root remains this checkout for existing nested-clone layouts.
+Source ADRs must be committed; missing sources for existing snapshots abort the
+refresh before copies or navigation are changed.
 """
 
+import argparse
 import re
 import shutil
 import subprocess
@@ -63,9 +67,9 @@ def yaml_scalar(value):
     return "'" + value.replace("'", "''") + "'"
 
 
-def copy_repo(repo):
+def copy_repo(repo, source_root):
     """Copy one repository's ADR directory into docs/adr/<repo>."""
-    repo_dir = ROOT / repo
+    repo_dir = source_root / repo
     source = adr_source(repo_dir)
     destination = TARGET / repo
 
@@ -77,7 +81,7 @@ def copy_repo(repo):
 
     shutil.copytree(source, destination)
 
-    sha = git(repo_dir, "rev-parse", "--short", "HEAD")
+    sha = git(repo_dir, "rev-parse", "HEAD")
     source_path = source.relative_to(repo_dir).as_posix()
     today = date.today().isoformat()
     for path in sorted(destination.rglob("*.md")):
@@ -165,13 +169,36 @@ def write_nav(copied):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--source-root",
+        type=Path,
+        default=ROOT,
+        help="Directory containing the source repository clones (default: this checkout)",
+    )
+    source_root = parser.parse_args().source_root.resolve()
     repos = [line.strip() for line in SOURCES.read_text(encoding="utf-8").splitlines() if line.strip()]
+    nav = MKDOCS.read_text(encoding="utf-8")
+    if NAV_START not in nav or NAV_END not in nav:
+        raise SystemExit("mkdocs.yml is missing ADR source navigation markers")
+    for repo in repos:
+        repo_dir = source_root / repo
+        source = adr_source(repo_dir)
+        if source is None:
+            if (TARGET / repo).exists():
+                raise SystemExit(f"{repo}: existing snapshot has no source under {repo_dir}; refresh aborted")
+            continue
+        if not git(repo_dir, "rev-parse", "HEAD"):
+            raise SystemExit(f"{repo}: cannot determine source commit; refresh aborted")
+        status = git(repo_dir, "status", "--porcelain", "--", source.relative_to(repo_dir).as_posix())
+        if status is None or status:
+            raise SystemExit(f"{repo}: source ADRs must be committed and readable; refresh aborted")
     copied = []
     for repo in repos:
-        if not (ROOT / repo).is_dir():
+        if not (source_root / repo).is_dir():
             print(f"  {repo}: not cloned, skipped")
             continue
-        entries = copy_repo(repo)
+        entries = copy_repo(repo, source_root)
         if entries:
             print(f"  {repo}: {len(entries)} ADR(s)")
             copied += entries
